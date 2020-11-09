@@ -3,6 +3,7 @@
 # this will be used for the finding a time where multable people are free
 # needs more optimisation
 # edit made for optimisateion now takes binary as entry 
+# edit made to impliment binary matching algoritham to find the times where everybody is free 
 def dec_to_patnum(num):
   num = int(str(num),2)
   out = ''
@@ -24,4 +25,21 @@ def patnum_to_dec(num):
   for i in range(0,len(num)):
     out+= (78**i)*symbols[num[i]]
   return out
-    
+ 
+ def binary_matching(group):
+  """
+  takes list of biary strings as an input  
+  """
+  output = []
+  i = 0
+  match = True
+  while not i==164:
+    match = True
+    for elem in group:
+      if elem[i] == '1':
+        match = False
+    if match == True:
+      output.append(i)
+      match = True
+    i+=1
+  return output
