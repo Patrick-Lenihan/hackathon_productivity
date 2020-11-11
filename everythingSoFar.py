@@ -209,7 +209,7 @@ def linksDisplay():
     menueList = getSubjects()
     dropdown = tk.StringVar(root)
     dropdown.set(menueList[0])
-    w = tk.OptionMenu(label1, dropdown, menueList,command=getLinks)
+    w = tk.OptionMenu(label1, dropdown, *menueList,command=getLinks)
     w.pack()
     w.place(relx = 0.30, rely = 0.01)
 
