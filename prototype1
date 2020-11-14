@@ -15,3 +15,59 @@ background_label = tk.Label(root, image = background_image)
 background_label.place(relwidth = 1, relheight = 1)'''
 background = tk.Label(root, bg = "#ffd480")
 background.place(relwidth = 1, relheight = 1)
+
+def openFromVoice():
+        conn = sqlite3.connect('timetable.db')
+        c = conn.cursor()
+        r = sr.Recognizer()
+        linkListForVoice = []
+        linkCommandListForVoice = []
+        for row in c.execute('select * from voiceLinks'):
+            linkListForVoice.append(row[1])
+            linkCommandListForVoice.append(row[0])
+        print(linkListForVoice)    
+        with sr.Microphone() as source:
+            print("Speak Anything :")
+            audio = r.listen(source)
+            try:
+                text = r.recognize_google(audio)
+                print("You said : {}".format(text))
+                if text in linkCommandListForVoice:
+                    print('passed')
+                    ind = linkCommandListForVoice.index(text)
+                    webbrowser.open(linkListForVoice[ind], new=0, autoraise=True)
+                    
+            except:
+                print("Sorry could not recognize what you said")
+#Sets the background image
+backgroung_image = tk.PhotoImage(file = "C:/Users/User/Documents/hackathon_progect/background1.png")
+background_label = tk.Label(root, image = backgroung_image)
+background_label.place(relwidth = 1, relheight = 1)
+
+#Creates the left frame
+lframe = tk.Frame(root, bg = "#38312d", bd = 5)
+lframe.place(relx = 0, rely = 0, relwidth = 0.1, relheight = 1)
+
+#Home Button
+btn1 = tk.Button(lframe, text = "Home", font = ("Helvetica", 18), bg = "#ffd480")
+btn1.place(relx = 0.01, rely = 0.01, relwidth = 0.95, relheight = 0.15)
+
+#Timetable Button
+btn2 = tk.Button(lframe, text = "Timetable", font = ("Helvetica", 18), bg =  "#ffd480")
+btn2.place(relx = 0.01, rely= 0.18, relwidth = 0.95, relheight = 0.15)
+
+#Links Button
+btn3 = tk.Button(lframe, text = "Links", font = ("Helvetica", 18), bg = "#ffd480")
+btn3.place(relx = 0.01, rely = 0.35, relwidth = 0.95, relheight = 0.15)
+
+#Voice Assistant Button
+btn4 = tk.Button(lframe, text = "Voice\n Assistant", font = ("Helvetica", 18), bg = "#ffd480", command=openFromVoice)
+btn4.place(relx = 0.01, rely = 0.52, relwidth = 0.95, relheight = 0.15)
+
+#Settings Button
+btn5 = tk.Button(lframe, text = "Settings", font = ("Helvetica", 18), bg = "#ffd480")
+btn5.place(relx = 0.01, rely = 0.69, relwidth = 0.95, relheight = 0.15)
+
+
+root.mainloop()
+
