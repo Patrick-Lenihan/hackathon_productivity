@@ -4,8 +4,11 @@
 # needs more optimisation
 # edit made for optimisateion now takes binary as entry 
 # edit made to impliment binary matching algoritham to find the times where everybody is free 
-import sqlite3
 import tkinter as tk
+import sqlite3
+    
+conn = sqlite3.connect('timetable.db')
+c = conn.cursor()
 root = tk.Tk()
 canvas = tk.Canvas(root, width = 1250, height = 700)
 canvas.pack()
@@ -22,6 +25,7 @@ def dec_to_patnum(num):
     else:
       out+= '?'
       num = num - ((78**i)*78)
+  #print('output',bin(patnum_to_dec(out)))
   return out
 
 def patnum_to_dec(num):
@@ -42,6 +46,7 @@ def binary_matching(group):
     while not i==164:
       match = True
       for elem in group:
+        #print(len(elem))
         if elem[i] == '1':
           match = False
       if match == True:
@@ -55,8 +60,8 @@ def binaryMatchingInput():
     inputList=inputList.split(' ')
     #print('input List:',inputList)
     inputList[:] = [patnum_to_dec(elem) for elem in inputList]
-    inputList[:] = [bin(elem) for elem in inputList]
-    inputList[:] = [elem.replace("0b","") for elem in inputList]
+    inputList[:] = [bin(elem)[2:].zfill(168) for elem in inputList]
+    #inputList[:] = [elem.replace("0b","") for elem in inputList]
     print(inputList)
     timesFreeList = binary_matching(inputList)
     outputToTK = []
@@ -78,15 +83,38 @@ def binaryMatchingInput():
         elif day == 6:
             outputToTK.append("sunday")
         outputToTK.append(hour)
-
+    print(outputToTK)
+  
     label1 = tk.Label(root, bg ="#FFFF00", text = outputToTK)
     label1.place(relwidth = 0.50, relheight = 0.50, relx = 0.50, rely = 0.50)    
 
+def generate_code():
+    schedual = [[],[],[],[],[],[],[]]
+    for row in c.execute('select * from timetables'):
+        for i in range(1,8):
+            schedual[i-1].append(row[i])
+    for item in range(7):
+        for time in range(24):
+            if schedual[item][time] == '':schedual[item][time]= '0'
+            else: schedual[item][time] ='1'
+    schedual = sum(schedual, [])
+    schedual = ''.join(schedual)
+    print('schedul:',schedual)
+    #print(len(schedual))
+    code = dec_to_patnum(schedual)
+    print('code',code)
+    
+    label2 = tk.Label(root, bg ="#FFFF00", text = code)
+    label2.place(relwidth = 0.50, relheight = 0.10, relx = 0.50, rely = 0.50)   
+
+codesEntryButton = tk.Button(text = "generate code", font = ("Helvetica", 12), bg = "#ffd480",command = generate_code)
+codesEntryButton.place(relx = 0.30, rely = 0.10, relwidth = 0.15, relheight = 0.15)
+
 codesEntryBox = tk.Entry(root,width = 15 ,bg = "white")
-codesEntryBox.place(relx = 0.01, rely = 0.01, relwidth = 0.30, relheight = 0.30)
+codesEntryBox.place(relx = 0.10, rely = 0.50, relwidth = 0.30, relheight = 0.30)
 
 codesEntryButton = tk.Button(text = "add subject", font = ("Helvetica", 12), bg = "#ffd480",command = binaryMatchingInput)
-codesEntryButton.place(relx = 0.30, rely = 0.01, relwidth = 0.15, relheight = 0.15)
+codesEntryButton.place(relx = 0.30, rely = 0.50, relwidth = 0.15, relheight = 0.15)
 
 '''ann = dec_to_patnum(111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111)
 
