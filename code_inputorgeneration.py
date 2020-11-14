@@ -84,8 +84,7 @@ def binaryMatchingInput():
             outputToTK.append("sunday")
         outputToTK.append(hour)
     print(outputToTK)
-  
-    label1 = tk.Label(root, bg ="#FFFF00", text = outputToTK)
+    label1 = tk.Label(root, bg ="#ffd480", text = outputToTK)
     label1.place(relwidth = 0.50, relheight = 0.50, relx = 0.50, rely = 0.50)    
 
 def generate_code():
@@ -104,17 +103,17 @@ def generate_code():
     code = dec_to_patnum(schedual)
     print('code',code)
     
-    label2 = tk.Label(root, bg ="#FFFF00", text = code)
-    label2.place(relwidth = 0.50, relheight = 0.10, relx = 0.50, rely = 0.50)   
+    label2 = tk.Label(root, bg ="#ffd480", text = code)
+    label2.place(relwidth = 0.50, relheight = 0.10, relx = 0.30, rely = 0.10)   
 
 codesEntryButton = tk.Button(text = "generate code", font = ("Helvetica", 12), bg = "#ffd480",command = generate_code)
-codesEntryButton.place(relx = 0.30, rely = 0.10, relwidth = 0.15, relheight = 0.15)
+codesEntryButton.place(relx = 0.10, rely = 0.10, relwidth = 0.15, relheight = 0.15)
 
 codesEntryBox = tk.Entry(root,width = 15 ,bg = "white")
 codesEntryBox.place(relx = 0.10, rely = 0.50, relwidth = 0.30, relheight = 0.30)
 
 codesEntryButton = tk.Button(text = "add subject", font = ("Helvetica", 12), bg = "#ffd480",command = binaryMatchingInput)
-codesEntryButton.place(relx = 0.30, rely = 0.50, relwidth = 0.15, relheight = 0.15)
+codesEntryButton.place(relx = 0.40, rely = 0.50, relwidth = 0.15, relheight = 0.15)
 
 '''ann = dec_to_patnum(111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111)
 
