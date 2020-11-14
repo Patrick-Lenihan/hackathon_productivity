@@ -9,12 +9,31 @@ root = tk.Tk()
 canvas = tk.Canvas(root, width = 1250, height = 700)
 canvas.pack()
 
-#Sets the background image
-'''background_image = tk.PhotoImage(file = "background1.png")
-background_label = tk.Label(root, image = background_image)
-background_label.place(relwidth = 1, relheight = 1)'''
-background = tk.Label(root, bg = "#ffd480")
-background.place(relwidth = 1, relheight = 1)
+
+def setingsPage():
+    conn = sqlite3.connect('timetable.db')
+    c = conn.cursor()
+
+    def add_voice_command():
+        newCommand = voiceCommandToAdd.get()
+        commandLink = voiceLinkToAdd.get()
+        c.execute('CREATE TABLE IF NOT EXISTS voiceLinks(command VARCHAR(10),link VARCHAR(20))')
+        l = [newCommand,commandLink]
+        c.execute('INSERT INTO voiceLinks VALUES(?,?)',l)
+        conn.commit()
+
+    #add_voice_command('Patrick','https://en.wikipedia.org/wiki/The_Greatest_(Sia_song)')
+    voiceCommandToAdd = tk.Entry(label1,width = 15 ,bg = "white")
+    voiceCommandToAdd.place(relx = 0.01, rely = 0.01, relwidth = 0.20, relheight = 0.05)
+
+    voiceLinkToAdd = tk.Entry(label1,width = 15 ,bg = "white",text="add a link")
+    voiceLinkToAdd.place(relx = 0.30, rely = 0.01, relwidth = 0.20, relheight = 0.05)
+    btnVoiceLinkAdd = tk.Button(label1, text = "add", font = ("Helvetica", 12), bg = "#ffd480",command = add_voice_command)
+    btnVoiceLinkAdd.place(relx = 0.40, rely = 0.01, relwidth = 0.10, relheight = 0.05)
+
+    w = tk.Label(label1, text="the above is to add a custom voice command. the first input is the command you want and the second one is the link you want to go to")
+    w.place(relx = 0.10, rely = 0.15)
+
 
 def openFromVoice():
         conn = sqlite3.connect('timetable.db')
@@ -39,7 +58,8 @@ def openFromVoice():
                     
             except:
                 print("Sorry could not recognize what you said")
-                
+
+#Function for when the timetable button is clicked
 def click_timetable():
     conn = sqlite3.connect("timetable.db")
     c = conn.cursor()
@@ -177,6 +197,7 @@ def click_timetable():
     #"Sunday" Box 
     label_top7 = tk.Label(rframe, bg = "#ffffff",  font = ("Helvetica", 15), text = "Sunday")
     label_top7.place(relx = (((0.93/8)*7)+0.07), rely = 0, relwidth = 0.93/8, relheight = 0.18 )
+
 #Sets the background image
 backgroung_image = tk.PhotoImage(file = "C:/Users/User/Documents/hackathon_progect/background1.png")
 background_label = tk.Label(root, image = backgroung_image)
@@ -190,12 +211,17 @@ lframe.place(relx = 0, rely = 0, relwidth = 0.1, relheight = 1)
 rframe = tk.Frame(root, bg = "#38312d", bd = 6)
 rframe.place(relx = 0.15, rely = 0.1, relwidth = 0.8, relheight = 0.8)
 
+#Label in right frame
+label1 = tk.Label(rframe, bg ="#ffffff")
+label1.place(relwidth = 1, relheight = 1)
+
+
 #Home Button
 btn1 = tk.Button(lframe, text = "Home", font = ("Helvetica", 18), bg = "#ffd480")
 btn1.place(relx = 0.01, rely = 0.01, relwidth = 0.95, relheight = 0.15)
 
 #Timetable Button
-btn2 = tk.Button(lframe, text = "Timetable", font = ("Helvetica", 18), bg =  "#ffd480")
+btn2 = tk.Button(lframe, text = "Timetable", font = ("Helvetica", 18), bg =  "#ffd480", command=click_timetable)
 btn2.place(relx = 0.01, rely= 0.18, relwidth = 0.95, relheight = 0.15)
 
 #Links Button
@@ -207,9 +233,10 @@ btn4 = tk.Button(lframe, text = "Voice\n Assistant", font = ("Helvetica", 18), b
 btn4.place(relx = 0.01, rely = 0.52, relwidth = 0.95, relheight = 0.15)
 
 #Settings Button
-btn5 = tk.Button(lframe, text = "Settings", font = ("Helvetica", 18), bg = "#ffd480")
+btn5 = tk.Button(lframe, text = "Settings", font = ("Helvetica", 18), bg = "#ffd480",command=setingsPage)
 btn5.place(relx = 0.01, rely = 0.69, relwidth = 0.95, relheight = 0.15)
 
 
 root.mainloop()
+
 
