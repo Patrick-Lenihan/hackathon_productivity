@@ -9,9 +9,60 @@ root = tk.Tk()
 canvas = tk.Canvas(root, width = 1250, height = 700)
 canvas.pack()
 
-'''
-test
-'''
+def linksDisplay():
+    conn = sqlite3.connect('timetable.db')
+    c = conn.cursor()
+    #c.execute('DROP TABLE subjects')
+
+    c.execute('CREATE TABLE IF NOT EXISTS subjects(subject VARCHAR(10), forKey VARCHAR(10))')
+    c.execute('CREATE TABLE IF NOT EXISTS notestable(key VARCHAR(10), link VARCHAR(10))')
+    def addSubject():
+        subjectName = subjectToAdd.get()
+        listToInsert = [subjectName,subjectName.replace(" ","_")]
+        #listToInsert2 = [subjectName.replace(" ","_"),"lol"]
+        c.execute('INSERT INTO subjects VALUES(?,?)',listToInsert)
+        #c.execute('INSERT INTO notestable VALUES(?,?)',listToInsert2)
+        conn.commit()
+    #
+    def addLink():
+        subjectName = dropdown.get()
+        link = linkToAdd.get()
+        listToInsert2 = [subjectName.replace(" ","_"),link]
+        c.execute('INSERT INTO notestable VALUES(?,?)',listToInsert2)
+        conn.commit()
+
+    def getLinks(subjectName):
+        subjectName = subjectName.replace(" ","_")
+        out = []
+        for row in c.execute('select link from notestable WHERE key=(?)',(subjectName,)):
+            out.append(row[0])
+        provOut = tk.Label(rframe, text = out)
+        provOut.place(relx = 0.50, rely = 0.50,relwidth = 0.10, relheight = 0.10)
+        return out
+    def getSubjects():
+        out = []
+        for row in c.execute('select subject from subjects'):
+            out.append(row[0])
+        return out
+
+    subjectToAdd = tk.Entry(label1,width = 15 ,bg = "white")
+    subjectToAdd.place(relx = 0.01, rely = 0.01, relwidth = 0.20, relheight = 0.05)
+    btnAdd = tk.Button(label1, text = "add subject", font = ("Helvetica", 12), bg = "#ffd480",command = addSubject)
+    btnAdd.place(relx = 0.15, rely = 0.01, relwidth = 0.10, relheight = 0.05)
+
+    menueList = getSubjects()
+    dropdown = tk.StringVar(root)
+    dropdown.set(menueList[0])
+    w = tk.OptionMenu(label1, dropdown, *menueList,command=getLinks)
+    w.pack()
+    w.place(relx = 0.30, rely = 0.01)
+
+    # the add links part
+    linkToAdd = tk.Entry(label1,width = 15 ,bg = "white")
+    linkToAdd.place(relx = 0.50, rely = 0.01, relwidth = 0.20, relheight = 0.05)
+    linkAdd = tk.Button(label1, text = "add link", font = ("Helvetica", 12), bg = "#ffd480",command = addLink)
+    linkAdd.place(relx = 0.65, rely = 0.01, relwidth = 0.10, relheight = 0.05)
+
 def sched_matching():
     def dec_to_patnum(num):
       num = int(str(num),2)
@@ -114,9 +165,7 @@ def sched_matching():
 
     codesEntryButton = tk.Button(label1,text = "add subject", font = ("Helvetica", 12), bg = "#ffd480",command = binaryMatchingInput)
     codesEntryButton.place(relx = 0.40, rely = 0.50, relwidth = 0.15, relheight = 0.15)
-'''
-test
-'''
+
 def setingsPage():
     conn = sqlite3.connect('timetable.db')
     c = conn.cursor()
@@ -332,7 +381,7 @@ btn2 = tk.Button(lframe, text = "Timetable", font = ("Helvetica", 18), bg =  "#f
 btn2.place(relx = 0.01, rely= 0.18, relwidth = 0.95, relheight = 0.15)
 
 #Links Button
-btn3 = tk.Button(lframe, text = "Links", font = ("Helvetica", 18), bg = "#ffd480")
+btn3 = tk.Button(lframe, text = "Links", font = ("Helvetica", 18), bg = "#ffd480",command=linksDisplay)
 btn3.place(relx = 0.01, rely = 0.35, relwidth = 0.95, relheight = 0.15)
 
 #Voice Assistant Button
