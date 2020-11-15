@@ -11,6 +11,8 @@ c = conn.cursor()
 root = tk.Tk()
 canvas = tk.Canvas(root, width = 1250, height = 700)
 canvas.pack()
+c.execute('CREATE TABLE IF NOT EXISTS timetables(times VARCHAR(10), Monday VARCHAR(10), Tuesday VARCHAR(10), Wednesday VARCHAR(10), Thursday VARCHAR(10),Friday VARCHAR(10), Saturday VARCHAR(10), Sunday)')
+conn.commit()
 
 def linksDisplay():
     conn = sqlite3.connect('timetable.db')
