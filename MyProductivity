@@ -452,8 +452,8 @@ def click_timetable():
     label_top7.place(relx = (((0.93/8)*7)+0.07), rely = 0, relwidth = 0.93/8, relheight = 0.18 )
 
 #Sets the background image
-backgroung_image = tk.PhotoImage(file = "background1.png")
-background_label = tk.Label(root, image = backgroung_image)
+background_image = tk.PhotoImage(file = "background1.png")
+background_label = tk.Label(root, image = background_image)
 background_label.place(relwidth = 1, relheight = 1)
 
 #Creates the left frame
