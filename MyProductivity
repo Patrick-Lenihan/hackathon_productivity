@@ -152,7 +152,7 @@ def sched_matching():
             elif day == 1:
                 outputToTK.append("tuesday")
             elif day == 2:
-                outputToTK.append("wensday")
+                outputToTK.append("wednesday")
             elif day == 3:
                 outputToTK.append("thursday")
             elif day ==4:
