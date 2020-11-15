@@ -2,10 +2,10 @@ import sqlite3
 import tkinter as tk
 try: 
     import speech_recognition as sr
+    r = sr.Recognizer()
 except:
     print('voice recognition librarys not installed check the github for directions on installing dependencys')
 import webbrowser
-r = sr.Recognizer()
 conn = sqlite3.connect('timetable.db')
 c = conn.cursor()
 root = tk.Tk()
@@ -286,27 +286,29 @@ def setingsPage():
 def openFromVoice():
         conn = sqlite3.connect('timetable.db')
         c = conn.cursor()
-        r = sr.Recognizer()
         linkListForVoice = []
         linkCommandListForVoice = []
         for row in c.execute('select * from voiceLinks'):
             linkListForVoice.append(row[1])
             linkCommandListForVoice.append(row[0])
-        print(linkListForVoice)    
-        with sr.Microphone() as source:
-            print("Speak Anything :")
-            audio = r.listen(source)
-            try:
-                text = r.recognize_google(audio)
-                print("You said : {}".format(text))
-                if text in linkCommandListForVoice:
-                    print('passed')
-                    ind = linkCommandListForVoice.index(text)
-                    webbrowser.open(linkListForVoice[ind], new=0, autoraise=True)
-                    
-            except:
-                print("Sorry could not recognize what you said")
-    
+        print(linkListForVoice)
+        try:
+            with sr.Microphone() as source:
+                print("Speak Anything :")
+                audio = r.listen(source)
+                try:
+                    text = r.recognize_google(audio)
+                    print("You said : {}".format(text))
+                    if text in linkCommandListForVoice:
+                        print('passed')
+                        ind = linkCommandListForVoice.index(text)
+                        webbrowser.open(linkListForVoice[ind], new=0, autoraise=True)
+                        
+                except:
+                    print("Sorry could not recognize what you said")
+        except:
+            print('error necicery modules not installed')
+        
         label_voice = tk.Label(label1, bg ="#ffffff", text = "Ask the voice assistant for assistance.\n if this does not work you may need to check our github for dependecys", font = ("Helvetica", 24))
         label_voice.place(relwidth = 1, relheight = 1)
 
