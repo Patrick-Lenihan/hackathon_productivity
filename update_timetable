@@ -1,0 +1,17 @@
+import sqlite3
+import tkinter as tk
+
+conn = sqlite3.connect('timetable.db')
+c = conn.cursor()
+
+
+
+def add_event(time,day,name):
+    name = '"'+name+'"'
+    time = '"'+time+'"'
+    execute = 'update timetables SET '+day+' = '+name+' where times = '+time
+    c.execute(execute)
+    conn.commit()
+
+
+add_event('11.00','Monday','study')
