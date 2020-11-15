@@ -1,6 +1,9 @@
 import sqlite3
 import tkinter as tk
-import speech_recognition as sr
+try: 
+    import speech_recognition as sr
+except:
+    print('voice recognition librarys not installed check the github for directions on installing dependencys')
 import webbrowser
 r = sr.Recognizer()
 conn = sqlite3.connect('timetable.db')
@@ -465,7 +468,7 @@ label1.place(relwidth = 1, relheight = 1)
 
 
 def click_home():
-    label3 = tk.Label(label1, bg ="#ffffff", font = ("Helvetica", 17), text = "Welcome to (name of project).\n This program is designed to make working and studying from home easier than ever.\n Press the 'Links' button to enter your timetable and links. You can view your timetable\n by clicking the 'timetable button' and you can access the links by clicking the 'links' button.\n You can also create custom voice commands by clicking 'settings' and then you can use\n these commands by clicking the 'voice assistant' button. Finally, if you click the\n 'Plan An Event' button, you can check what time you are free so you can plan an\n event without any scheduling conflicts. ")
+    label3 = tk.Label(label1, bg ="#ffffff", font = ("Helvetica", 17), text = "Welcome to MyProductivity.\n This program is designed to make working and studying from home easier than ever.\n Press the 'Links' button to enter your timetable and links. You can view your timetable\n by clicking the 'timetable button' and you can access the links by clicking the 'links' button.\n You can also create custom voice commands by clicking 'settings' and then you can use\n these commands by clicking the 'voice assistant' button. Finally, if you click the\n 'Plan An Event' button, you can check what time you are free so you can plan an\n event without any scheduling conflicts. ")
     label3.place(relwidth = 1, relheight = 1)
 
 
